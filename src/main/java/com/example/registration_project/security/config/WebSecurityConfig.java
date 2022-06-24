@@ -1,7 +1,6 @@
 package com.example.registration_project.security.config;
 
 import com.example.registration_project.appuser.AppUserService;
-import com.example.registration_project.security.PasswordEncoder;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/v*/registration/*")
+                    .antMatchers("/api/v*/registration/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated().and()
