@@ -1,28 +1,41 @@
 package com.example.registration_project.appuser;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AppUserService implements UserDetailsService {
 
-    private final AppUserRepository repository;
-
-    @Autowired
-    public AppUserService(AppUserRepository repository) {
-        this.repository = repository;
-    }
+    private final AppUserRepository appUserRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repository.findByEmail(email)
+        return appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
     }
 
     public String signUpUser(AppUser appUser) {
-        return "";
+        boolean userExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
+
+        if (userExists) {
+            throw new IllegalStateException("Email " + appUser.getEmail() + " already taken");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
+
+        appUser.setPassword(encodedPassword);
+
+        appUserRepository.save(appUser);
+
+        // TODO: Send confirmation token
+
+        return "signUpUser Service works";
     }
 }
