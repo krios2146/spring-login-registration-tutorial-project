@@ -21,6 +21,7 @@ public class AppUserService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email)
@@ -52,5 +53,10 @@ public class AppUserService implements UserDetailsService {
 
         // TODO: Send email
         return token;
+    }
+
+
+    public int enableAppUser(String email) {
+       return appUserRepository.enableAppUser(email);
     }
 }
