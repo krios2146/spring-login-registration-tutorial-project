@@ -3,7 +3,6 @@ package com.example.registration_project.appuser;
 import com.example.registration_project.registration.token.ConfirmationToken;
 import com.example.registration_project.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +19,6 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
